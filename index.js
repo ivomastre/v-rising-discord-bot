@@ -14,8 +14,15 @@ const main = async () => {
   await updateDiscordPost(serverInfo);
 };
 
-const server = http.createServer((_, res) => {
-  main();
+const server = http.createServer(async (_, res) => {
+  console.log("Request received 🐒");
+
+  res.statusCode = 200;
+
+  await main().catch((err) => {
+    console.error(err);
+    res.statusCode = 500;
+  });
 
   res.end();
 });
