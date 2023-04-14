@@ -1,18 +1,15 @@
 import SteamClient from "./steamClient.js";
+import updateDiscordPost from "./updateDiscordPost.js";
+import "dotenv/config";
 
-const ADDRESS = "131.221.200.19";
-const PORT = 9877;
+const ADDRESS = process.env.SERVER_ADDRESS;
+const PORT = process.env.SERVER_PORT;
 
 const main = async () => {
   const steamClient = new SteamClient();
-  const serverInfo = await steamClient.getServerInfo(ADDRESS, PORT);
-  console.log(serverInfo);
+  const serverInfo = await steamClient.fetchServer(ADDRESS, PORT);
 
-  const playerInfo = await steamClient.getPlayerInfo(ADDRESS, PORT);
-  console.log(playerInfo);
-
-  const rules = await steamClient.getRules(ADDRESS, PORT);
-  console.log(rules);
+  await updateDiscordPost(serverInfo);
 };
 
 main();

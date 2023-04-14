@@ -3,7 +3,7 @@ import {
   getServerInfoSanitizer,
   getPlayerInfoSanitizer,
   getRulesSanitizer,
-} from "./utils/sanitizer";
+} from "./utils/sanitizer.js";
 
 class SteamClient {
   constructor() {
@@ -73,6 +73,14 @@ class SteamClient {
     );
 
     return getRulesSanitizer(rulesInfo);
+  }
+
+  async fetchServer(ipAddress, port) {
+    const serverInfo = await this.getServerInfo(ipAddress, port);
+    const playerInfo = await this.getPlayerInfo(ipAddress, port);
+    const rules = await this.getRules(ipAddress, port);
+
+    return { ...serverInfo, ...playerInfo, ...rules };
   }
 }
 
