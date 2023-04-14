@@ -54,15 +54,15 @@ const updateDiscordPost = async (props) => {
 
   const messages = await channel.messages.fetch();
 
-  const message = messages.find(
+  const messagesToDelete = messages.filter(
     (message) => message.author.id === DISCORD_BOT_ID
   );
-  const content = createContent(props);
-  if (message) {
-    await message.delete();
+
+  if (messagesToDelete.size > 0) {
+    await channel.bulkDelete(messagesToDelete);
   }
 
-  await channel.send({ embeds: [content] });
+  await channel.send({ embeds: [createContent(props)] });
 
   client.destroy();
 };
